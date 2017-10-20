@@ -39,6 +39,15 @@ static inline void *_odp_packet_data(odp_packet_t pkt)
 }
 
 /** @internal Inline function @param pkt @return */
+static inline uint16_t _odp_packet_data_off(odp_packet_t pkt)
+{
+	uint16_t data_off = *(uint16_t *)(void *)((char *)pkt +
+			      _odp_packet_inline.data);
+
+	return (data_off);
+}
+
+/** @internal Inline function @param pkt @return */
 static inline uint32_t _odp_packet_seg_len(odp_packet_t pkt)
 {
 	return *(uint16_t *)(void *)((char *)pkt + _odp_packet_inline.seg_len);

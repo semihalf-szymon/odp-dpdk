@@ -18,6 +18,11 @@ _ODP_INLINE void *odp_packet_data(odp_packet_t pkt)
 	return _odp_packet_data(pkt);
 }
 
+_ODP_INLINE uint16_t odp_packet_data_off(odp_packet_t pkt)
+{
+	return _odp_packet_data_off(pkt);
+}
+
 _ODP_INLINE uint32_t odp_packet_seg_len(odp_packet_t pkt)
 {
 	return _odp_packet_seg_len(pkt);

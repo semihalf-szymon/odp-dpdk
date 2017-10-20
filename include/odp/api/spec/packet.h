@@ -243,6 +243,20 @@ uint32_t odp_packet_buf_len(odp_packet_t pkt);
 void *odp_packet_data(odp_packet_t pkt);
 
 /**
+ * Offset of packet data
+ *
+ * Returns the value of 'data' parameter from packet header. At start
+ * it is equal to size of packet headroom.
+ *
+ * @param pkt  Packet handle
+ *
+ * @return  Offset of packet data
+ *
+ * @see odp_packet_data()
+ */
+uint16_t odp_packet_data_off(odp_packet_t pkt);
+
+/**
  * Packet segment data length
  *
  * Returns number of data bytes following the current data pointer
