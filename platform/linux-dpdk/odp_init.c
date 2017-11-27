@@ -194,6 +194,7 @@ int odp_init_global(odp_instance_t *instance,
 		    const odp_platform_init_t *platform_params)
 {
 	char *hpdir;
+	char cmdline[256] = "";
 
 	memset(&odp_global_data, 0, sizeof(struct odp_global_data_s));
 	odp_global_data.main_pid = getpid();
@@ -217,7 +218,11 @@ int odp_init_global(odp_instance_t *instance,
 	}
 	stage = CPUMASK_INIT;
 
-	if (odp_init_dpdk((const char *)platform_params)) {
+	if (platform_params)
+	  snprintf(cmdline, 256, "-m %u %s", platform_params->memory,
+		   (platform_params->cmdline ? platform_params->cmdline : ""));
+
+	if (odp_init_dpdk(platform_params ? cmdline : NULL)) {
 		ODP_ERR("ODP dpdk init failed.\n");
 		return -1;
 	}
