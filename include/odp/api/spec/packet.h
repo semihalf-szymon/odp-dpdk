@@ -1231,6 +1231,15 @@ void odp_packet_user_ptr_set(odp_packet_t pkt, const void *ctx);
 void *odp_packet_user_area(odp_packet_t pkt);
 
 /**
+ * User area offset
+ *
+ * Offset of user area relative to start of packet header.
+ *
+ * @return       User area offset
+ */
+uint32_t odp_packet_user_area_off(void);
+
+/**
  * User area size
  *
  * The size is fixed and defined in packet pool parameters.
