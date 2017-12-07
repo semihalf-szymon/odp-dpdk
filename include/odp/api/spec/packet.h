@@ -1231,6 +1231,17 @@ void odp_packet_user_ptr_set(odp_packet_t pkt, const void *ctx);
 void *odp_packet_user_area(odp_packet_t pkt);
 
 /**
+ * Packet header from user area pointer
+ *
+ * Return address of packet header associated with user area.
+ *
+ * @param uarea	 User area address
+ *
+ * @return       Packet header address
+ */
+odp_packet_t odp_packet_from_user_area(void *uarea);
+
+/**
  * User area offset
  *
  * Offset of user area relative to start of packet header.
