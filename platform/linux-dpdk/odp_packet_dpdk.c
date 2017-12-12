@@ -306,7 +306,7 @@ static int stop_pkt_dpdk(pktio_entry_t *pktio_entry)
 /* Forward declaration */
 static int send_pkt_dpdk(pktio_entry_t *pktio_entry, int index,
 			 const odp_packet_t pkt_table[], int len);
-
+#if 0
 /* This function can't be called if pkt_dpdk->lockless_tx is true */
 static void _odp_pktio_send_completion(pktio_entry_t *pktio_entry)
 {
@@ -343,17 +343,18 @@ static void _odp_pktio_send_completion(pktio_entry_t *pktio_entry)
 
 	return;
 }
+#endif
 
 static int recv_pkt_dpdk(pktio_entry_t *pktio_entry, int index,
 			 odp_packet_t pkt_table[], int len)
 {
 	uint16_t nb_rx, i;
-	odp_packet_t *saved_pkt_table;
+//	odp_packet_t *saved_pkt_table;
 	pkt_dpdk_t * const pkt_dpdk = &pktio_entry->s.pkt_dpdk;
 	uint8_t min = pkt_dpdk->min_rx_burst;
 	odp_time_t ts_val;
 	odp_time_t *ts = NULL;
-
+#if 0
 	if (odp_unlikely(min > len)) {
 		ODP_DBG("PMD requires >%d buffers burst. "
 			"Current %d, dropped %d\n", min, len, min - len);
@@ -363,7 +364,7 @@ static int recv_pkt_dpdk(pktio_entry_t *pktio_entry, int index,
 
 	if (!pkt_dpdk->lockless_rx)
 		odp_ticketlock_lock(&pkt_dpdk->rx_lock[index]);
-
+#endif
 	nb_rx = rte_eth_rx_burst((uint8_t)pkt_dpdk->portid,
 				 (uint16_t)index,
 				 (struct rte_mbuf **)pkt_table,
@@ -374,7 +375,7 @@ static int recv_pkt_dpdk(pktio_entry_t *pktio_entry, int index,
 		ts_val = odp_time_global();
 		ts = &ts_val;
 	}
-
+#if 0
 	if (nb_rx == 0 && !pkt_dpdk->lockless_tx) {
 		pool_entry_t *pool_entry =
 			get_pool_entry(_odp_typeval(pktio_entry->s.pool));
@@ -386,20 +387,21 @@ static int recv_pkt_dpdk(pktio_entry_t *pktio_entry, int index,
 
 	if (!pkt_dpdk->lockless_rx)
 		odp_ticketlock_unlock(&pkt_dpdk->rx_lock[index]);
-
+#endif
 	for (i = 0; i < nb_rx; ++i) {
 		odp_packet_hdr_t *pkt_hdr = odp_packet_hdr(pkt_table[i]);
 
-		packet_parse_reset(pkt_hdr);
+//		packet_parse_reset(pkt_hdr);
 		pkt_hdr->input = pktio_entry->s.handle;
-
+#if 0
 		if (!pktio_cls_enabled(pktio_entry) &&
 		    pktio_entry->s.config.parser.layer)
 			packet_parse_layer(pkt_hdr,
 					   pktio_entry->s.config.parser.layer);
+#endif
 		packet_set_ts(pkt_hdr, ts);
 	}
-
+#if 0
 	if (odp_unlikely(min > len)) {
 		memcpy(saved_pkt_table, pkt_table,
 		       len * sizeof(odp_packet_t));
@@ -456,7 +458,7 @@ static int recv_pkt_dpdk(pktio_entry_t *pktio_entry, int index,
 		pktio_entry->s.stats.in_ucast_pkts += nb_rx - failed;
 		nb_rx = success;
 	}
-
+#endif
 	return nb_rx;
 }
 
